@@ -39,10 +39,18 @@ public class SimpleJobConfiguration {
 
 }
 
-
 /**
  * Job: 하나의 배치 작업 단위
  * Step: Job 안에 여러 Step이 존재한다.
  * Step 안에 Tasklet 또는 Reader & Processor & Writer 묶음이 존재한다.
  * Tasklet: @Component, @Bean과 비슷한 역할. 명확한 역할은 없지만 개발자가 지정한 커스텀한 기능을 위한 단위.
- **/
+ *
+ * Spring Batch의 메타데이터
+ * - 이전에 실행한 Job이 어떤 것들이 있는지
+ * - 최근 실패한 Batch Parameter가 어떤 것들이고, 성공한 Job은 어떤 것들이 있는지
+ * - 다시 실행한다면 어디서부터 시작하면 될지
+ * - 어떤 Job에 어떤 Step들이 있었고, Step들 중에서 성공한 Step과 실패한 Step들은 어떤 것들이 있는지
+ *
+ * MySQL이랑 연결 참고: https://jojoldu.tistory.com/325
+ *
+ */
