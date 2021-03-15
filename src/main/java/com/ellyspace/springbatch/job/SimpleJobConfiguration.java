@@ -14,6 +14,10 @@ import org.springframework.context.annotation.Configuration;
 @Slf4j
 @Configuration //Spring Batch의 모든 Job은 @Configuration으로 등록해서 사용한다.
 public class SimpleJobConfiguration {
+    private static final String JOB_NAME = "simpleJob";
+    private static final String STEP_1 = "simpleStep1";
+    private static final String STEP_2 = "simpleStep2";
+
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
@@ -24,7 +28,7 @@ public class SimpleJobConfiguration {
 
     @Bean
     public Job simpleJob() {
-        return jobBuilderFactory.get("simpleJob") //simpleJob이라는 이름으로 batch job을 생성한다.
+        return jobBuilderFactory.get(JOB_NAME) //simpleJob이라는 이름으로 batch job을 생성한다.
                 .start(simpleStep1(null))
                 .next(simpleStep2(null))
                 .build();
@@ -33,7 +37,7 @@ public class SimpleJobConfiguration {
     @Bean
     @JobScope
     public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestDate) { //jobParameters : 외부에서 받을 수 있는 파라미터 (Program Arguments)
-        return stepBuilderFactory.get("simpleStep1") //simpleStep1이라는 batch step 생성
+        return stepBuilderFactory.get(STEP_1) //simpleStep1이라는 batch step 생성
                 .tasklet(((contribution, chunkContext) -> { //tasklet: step 안에서 단일로 수행될 커스텀 기능들을 선언할 때 사용
                     log.info(">>>>> This is STEP1");
                     log.info(">>>>> requestDate = {}" , requestDate);
@@ -45,7 +49,7 @@ public class SimpleJobConfiguration {
     @Bean
     @JobScope
     public Step simpleStep2(@Value("#{jobParameters[requestDate]}") String requestDate) {
-        return stepBuilderFactory.get("simpleStep2")
+        return stepBuilderFactory.get(STEP_2)
                 .tasklet(((contribution, chunkContext) -> {
                     log.info(">>>>> This is STEP2");
                     log.info(">>>>> requestDate = {}", requestDate);
